@@ -3,13 +3,9 @@
   <head>
     <title>AR.js Image Tracking</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script> -->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.3.2/aframe/build/aframe-ar.min.js"></script>
+    <!-- Usar solo un script de AR.js -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-
-    <!-- <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script> -->
-    <!-- <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script> -->
     <link rel="stylesheet" href="styles.css" />
     <style>
       .arjs-loader {
@@ -32,30 +28,6 @@
       }
     </style>
   </head>
-  <!-- <body style="margin: 0; overflow: hidden">
-    <div class="instructions">
-      <h1>AR Image Tracker</h1>
-      <p>Apunta tu cámara hacia el marcador para ver el contenido AR</p>
-    </div>
-
-    <a-scene
-      embedded
-      arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-      renderer="logarithmicDepthBuffer: true;"
-      vr-mode-ui="enabled: false"
-    >
-      Definimos el marcador y el contenido AR
-      <a-marker type="pattern" url="pattern-marker.patt">
-        Aquí irá el modelo 3D
-        <a-box position="0 0.5 0" material="color: red;"></a-box>
-      </a-marker>
-
-      Cámara
-      <a-entity camera></a-entity>
-    </a-scene>
-
-    <script src="app.js"></script>
-  </body> -->
   <body style="margin: 0; overflow: hidden">
     <!-- Loader mientras se inicializa AR -->
     <div class="arjs-loader">
@@ -71,18 +43,18 @@
       vr-mode-ui="enabled: false;"
       renderer="logarithmicDepthBuffer: true;"
       embedded
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true; detectionMode: mono_and_matrix; matrixCodeType: 3x3; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
     >
       <a-nft
         type="nft"
-        url="nft/mesa"
+        url="./nft/mesa"
         smooth="true"
         smoothCount="10"
         smoothTolerance="0.01"
         smoothThreshold="5"
       >
         <a-entity
-          gltf-model="./models/wooden-table-coffee-table-furniture-table/source/Wooden_Table/Wooden_Table.glb"
+          gltf-model="./models/Wooden_Table.glb"
           scale="50 50 50"
           position="50 150 -100"
           rotation="-90 0 0"
