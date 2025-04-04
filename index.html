@@ -43,6 +43,7 @@
     <a-scene
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3"
+      renderer="logarithmicDepthBuffer: true;"
       vr-mode-ui="enabled: false"
     >
       <a-nft
@@ -61,6 +62,7 @@
         ></a-entity>
       </a-nft>
 
+      <!-- Cámara -->
       <a-entity camera></a-entity>
     </a-scene>
     <script src="app.js"></script>
