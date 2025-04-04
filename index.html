@@ -11,6 +11,26 @@
     <!-- <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script> -->
     <!-- <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script> -->
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+    </style>
   </head>
   <!-- <body style="margin: 0; overflow: hidden">
     <div class="instructions">
@@ -37,16 +57,21 @@
     <script src="app.js"></script>
   </body> -->
   <body style="margin: 0; overflow: hidden">
+    <!-- Loader mientras se inicializa AR -->
+    <div class="arjs-loader">
+      <div>Cargando, por favor espera...</div>
+    </div>
+
     <div class="instructions">
       <h1>AR Image Tracker</h1>
       <p>Apunta tu cámara hacia la imagen para ver el modelo 3D</p>
     </div>
 
     <a-scene
-      vr-mode-ui="enabled: false"
-      renderer="logarithmicDepthBuffer: true; precision: medium;"
+      vr-mode-ui="enabled: false;"
+      renderer="logarithmicDepthBuffer: true;"
       embedded
-      arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960;"
     >
       <a-nft
         type="nft"
@@ -58,10 +83,11 @@
       >
         <a-entity
           gltf-model="models/Wooden_Table.glb"
-          scale="5 5 5"
-          position="50 150 0"
-          rotation="-90 0 0"
-        ></a-entity>
+          scale="1 1 1"
+          position="0 0 0"
+          rotation="0 0 0"
+        >
+        </a-entity>
       </a-nft>
       <a-entity camera></a-entity>
     </a-scene>
