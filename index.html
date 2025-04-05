@@ -18,7 +18,14 @@
       <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
       <a-marker preset="hiro">
         <!-- Un cubo rojo -->
-        <a-box position="0 0.5 0" material="color: green;"></a-box>
+        <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
+        <a-entity
+          gltf-model="url(./)"
+          position="0 0 0"
+          scale="0.5 0.5 0.5"
+          rotation="0 180 0"
+        >
+        </a-entity>
         <!-- Un texto encima del cubo -->
         <a-text
           value="¡Hola desde AR.js!"
