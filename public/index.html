@@ -16,6 +16,22 @@
     <!-- Escena AR -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
       <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
+      <a-nft
+        type="nft"
+        url="nft"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <a-entity
+          gltf-model="url(models/patricio.glb)"
+          scale="5 5 5"
+          position="150 300 -100"
+        >
+        </a-entity>
+      </a-nft>
+
       <a-marker preset="hiro">
         <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
         <a-entity
