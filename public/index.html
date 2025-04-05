@@ -16,7 +16,23 @@
     <!-- Escena AR -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
       <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
-      <!-- <a-marker preset="hiro"> -->
+      <a-marker preset="hiro">
+        <!-- Un cubo rojo -->
+        <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
+        <a-entity
+          gltf-model="url(models/Wooden_Table.glb)"
+          position="0 0 0"
+          scale="1 1 1 "
+          rotation="0 180 0"
+        >
+        </a-entity>
+        <!-- Un texto encima del cubo -->
+        <a-text
+          value="¡Table on augmented really 😎!"
+          position="0 1.5 0"
+          align="center"
+        ></a-text>
+      </a-marker>
       <a-marker type="pattern" url="patterns/solo-un-leon.patt">
         <!-- Un cubo rojo -->
         <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
