@@ -16,7 +16,8 @@
     <!-- Escena AR -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
       <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
-      <a-marker preset="hiro">
+      <!-- <a-marker preset="hiro"> -->
+      <a-marker type="pattern" url="patterns/leon.patt">
         <!-- Un cubo rojo -->
         <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
         <a-entity
