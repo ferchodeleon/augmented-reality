@@ -1,68 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AR.js Image Tracking</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <!-- Usar solo un script de AR.js -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <link rel="stylesheet" href="styles.css" />
+    <title>AR.js con A-Frame</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
     <style>
-      .arjs-loader {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.8);
-        z-index: 9999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .arjs-loader div {
-        text-align: center;
-        font-size: 1.25em;
-        color: white;
+      body,
+      html {
+        margin: 0;
+        overflow: hidden;
       }
     </style>
   </head>
-  <body style="margin: 0; overflow: hidden">
-    <!-- Loader mientras se inicializa AR -->
-    <div class="arjs-loader">
-      <div>Cargando, por favor espera...</div>
-    </div>
+  <body>
+    <!-- Escena AR -->
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
+      <a-marker preset="hiro">
+        <!-- Un cubo rojo -->
+        <a-box position="0 0.5 0" material="color: red;"></a-box>
+        <!-- Un texto encima del cubo -->
+        <a-text
+          value="¡Hola desde AR.js!"
+          position="0 1.5 0"
+          align="center"
+        ></a-text>
+      </a-marker>
 
-    <div class="instructions">
-      <h1>AR Image Tracker</h1>
-      <p>Apunta tu cámara hacia la imagen para ver el modelo 3D</p>
-    </div>
-
-    <a-scene
-      vr-mode-ui="enabled: false;"
-      renderer="logarithmicDepthBuffer: true;"
-      embedded
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-    >
-      <a-nft
-        type="nft"
-        url="./nft/github"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
-      >
-        <a-entity
-          gltf-model="./models/Wooden_Table.glb"
-          scale="50 50 50"
-          position="50 150 -100"
-          rotation="-90 0 0"
-        >
-        </a-entity>
-      </a-nft>
+      <!-- Cámara -->
       <a-entity camera></a-entity>
     </a-scene>
-    <script src="app.js"></script>
   </body>
 </html>
