@@ -49,13 +49,21 @@
         top: 0;
         left: 0;
       }
+      #video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
     </style>
   </head>
   <body>
     <div class="arjs-loader">
       <div>Loading, please wait...</div>
     </div>
-    <div id="debug-info"></div>
 
     <a-scene
       vr-mode-ui="enabled: false"
@@ -123,50 +131,52 @@
     <!-- Cámara -->
     <!-- <a-entity camera></a-entity>
     </a-scene> -->
-  </body>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Solicitar permisos de cámara
-      navigator.mediaDevices
-        .getUserMedia({
-          video: {
-            facingMode: "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-          },
-        })
-        .then((stream) => {
-          console.log("Permisos de cámara concedidos");
-          document.querySelector(".arjs-loader").style.display = "none";
 
-          // Verificar si la escena está lista
-          const scene = document.querySelector("a-scene");
-          if (scene.hasLoaded) {
-            console.log("Escena ya cargada");
-          } else {
-            scene.addEventListener("loaded", () => {
-              console.log("Escena cargada");
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const video = document.getElementById("video");
+        const debugInfo = document.getElementById("debug-info");
+
+        // Solicitar permisos de cámara
+        navigator.mediaDevices
+          .getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+            },
+          })
+          .then((stream) => {
+            console.log("Permisos de cámara concedidos");
+            video.srcObject = stream;
+            document.querySelector(".arjs-loader").style.display = "none";
+
+            // Verificar si la escena está lista
+            const scene = document.querySelector("a-scene");
+            if (scene.hasLoaded) {
+              console.log("Escena ya cargada");
+            } else {
+              scene.addEventListener("loaded", () => {
+                console.log("Escena cargada");
+              });
+            }
+
+            // Eventos de depuración
+            scene.addEventListener("markerFound", (e) => {
+              console.log("Marcador encontrado");
+              debugInfo.innerHTML = "Marcador encontrado!";
             });
-          }
 
-          // Eventos de depuración
-          scene.addEventListener("markerFound", (e) => {
-            console.log("Marcador encontrado");
-            document.getElementById("debug-info").innerHTML =
-              "Marcador encontrado!";
+            scene.addEventListener("markerLost", (e) => {
+              console.log("Marcador perdido");
+              debugInfo.innerHTML = "Buscando marcador...";
+            });
+          })
+          .catch((err) => {
+            console.error("Error al solicitar permisos de cámara:", err);
+            document.querySelector(".arjs-loader").innerHTML =
+              "<div>Error al acceder a la cámara. Por favor, asegúrate de dar los permisos necesarios.</div>";
           });
-
-          scene.addEventListener("markerLost", (e) => {
-            console.log("Marcador perdido");
-            document.getElementById("debug-info").innerHTML =
-              "Buscando marcador...";
-          });
-        })
-        .catch((err) => {
-          console.error("Error al solicitar permisos de cámara:", err);
-          document.querySelector(".arjs-loader").innerHTML =
-            "<div>Error al acceder a la cámara. Por favor, asegúrate de dar los permisos necesarios.</div>";
-        });
-    });
-  </script>
+      });
+    </script>
+  </body>
 </html>
