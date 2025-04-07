@@ -1,40 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AR.js con A-Frame</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
-
+    <title>AR NFT Marker Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- A-Frame and AR.js libraries -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
-
     <style>
-      body,
-      html {
-        margin: 0;
-        overflow: hidden;
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
       }
     </style>
   </head>
-  <body>
+
+  <body style="margin: 0px; overflow: hidden">
+    <!-- Loading screen -->
     <div class="arjs-loader">
-      <div>Loading, please wait...</div>
+      <div>Cargando experiencia AR, por favor espera...</div>
     </div>
-    <!-- Escena AR -->
+
+    <!-- A-Frame scene -->
     <a-scene
+      vr-mode-ui="enabled: false"
       renderer="logarithmicDepthBuffer: true; precision: medium;"
       embedded
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
     >
-      <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
+      <!-- Using NFT marker -->
       <a-nft
         type="nft"
-        url="nft/zebra"
+        url="marker/zebra"
         smooth="true"
         smoothCount="10"
         smoothTolerance=".01"
         smoothThreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
       >
+        <!-- 3D model to show when marker is detected -->
+        <!-- <a-entity position="50 150 -100" scale="50 50 50" rotation="-90 0 0">
+          <a-box color="red" class="clickable"></a-box>
+        </a-entity> -->
         <a-entity
           gltf-model="url(models/patricio.glb)"
           position="50 150 -100"
@@ -44,37 +66,19 @@
         </a-entity>
       </a-nft>
 
-      <a-marker preset="hiro">
-        <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
-        <a-entity
-          gltf-model="url(models/patricio.glb)"
-          position="0 0 0"
-          scale="1 1 1 "
-          rotation="0 180 0"
-        >
-        </a-entity>
-        <!-- Un texto encima del cubo -->
-      </a-marker>
-
-      <a-marker type="pattern" url="patterns/marker.patt">
-        <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
-        <a-entity
-          gltf-model="url(models/Wooden_Table.glb)"
-          position="0 0 0"
-          scale="1 1 1 "
-          rotation="0 180 0"
-        >
-        </a-entity>
-        <!-- Un texto encima del cubo -->
-        <a-text
-          value="¡Table on augmented really 😎!"
-          position="0 1.5 0"
-          align="center"
-        ></a-text>
-      </a-marker>
-
-      <!-- Cámara -->
+      <!-- Static camera -->
       <a-entity camera></a-entity>
     </a-scene>
+
+    <script>
+      // Añadir eventos de depuración
+      const nft = document.querySelector("a-nft");
+      nft.addEventListener("markerFound", function () {
+        console.log("Marcador encontrado");
+      });
+      nft.addEventListener("markerLost", function () {
+        console.log("Marcador perdido");
+      });
+    </script>
   </body>
 </html>
