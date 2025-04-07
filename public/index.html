@@ -10,6 +10,8 @@
       html {
         margin: 0;
         padding: 0;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
       }
       .arjs-loader {
@@ -39,6 +41,13 @@
         padding: 10px;
         z-index: 1000;
         font-family: monospace;
+      }
+      a-scene {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
     </style>
   </head>
@@ -116,37 +125,48 @@
     </a-scene> -->
   </body>
   <script>
-    // Forzar la solicitud de permisos de cámara
     document.addEventListener("DOMContentLoaded", () => {
+      // Solicitar permisos de cámara
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia({
+          video: {
+            facingMode: "environment",
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
+        })
         .then((stream) => {
           console.log("Permisos de cámara concedidos");
           document.querySelector(".arjs-loader").style.display = "none";
+
+          // Verificar si la escena está lista
+          const scene = document.querySelector("a-scene");
+          if (scene.hasLoaded) {
+            console.log("Escena ya cargada");
+          } else {
+            scene.addEventListener("loaded", () => {
+              console.log("Escena cargada");
+            });
+          }
+
+          // Eventos de depuración
+          scene.addEventListener("markerFound", (e) => {
+            console.log("Marcador encontrado");
+            document.getElementById("debug-info").innerHTML =
+              "Marcador encontrado!";
+          });
+
+          scene.addEventListener("markerLost", (e) => {
+            console.log("Marcador perdido");
+            document.getElementById("debug-info").innerHTML =
+              "Buscando marcador...";
+          });
         })
         .catch((err) => {
           console.error("Error al solicitar permisos de cámara:", err);
           document.querySelector(".arjs-loader").innerHTML =
             "<div>Error al acceder a la cámara. Por favor, asegúrate de dar los permisos necesarios.</div>";
         });
-
-      // Agregar información de depuración
-      const scene = document.querySelector("a-scene");
-      scene.addEventListener("loaded", () => {
-        console.log("Escena cargada");
-      });
-
-      scene.addEventListener("markerFound", (e) => {
-        console.log("Marcador encontrado");
-        document.getElementById("debug-info").innerHTML =
-          "Marcador encontrado!";
-      });
-
-      scene.addEventListener("markerLost", (e) => {
-        console.log("Marcador perdido");
-        document.getElementById("debug-info").innerHTML =
-          "Buscando marcador...";
-      });
     });
   </script>
 </html>
