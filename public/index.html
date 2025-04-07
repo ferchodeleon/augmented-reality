@@ -131,52 +131,5 @@
     <!-- Cámara -->
     <!-- <a-entity camera></a-entity>
     </a-scene> -->
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const video = document.getElementById("video");
-        const debugInfo = document.getElementById("debug-info");
-
-        // Solicitar permisos de cámara
-        navigator.mediaDevices
-          .getUserMedia({
-            video: {
-              width: { ideal: 1280 },
-              height: { ideal: 720 },
-            },
-          })
-          .then((stream) => {
-            console.log("Permisos de cámara concedidos");
-            video.srcObject = stream;
-            document.querySelector(".arjs-loader").style.display = "none";
-
-            // Verificar si la escena está lista
-            const scene = document.querySelector("a-scene");
-            if (scene.hasLoaded) {
-              console.log("Escena ya cargada");
-            } else {
-              scene.addEventListener("loaded", () => {
-                console.log("Escena cargada");
-              });
-            }
-
-            // Eventos de depuración
-            scene.addEventListener("markerFound", (e) => {
-              console.log("Marcador encontrado");
-              debugInfo.innerHTML = "Marcador encontrado!";
-            });
-
-            scene.addEventListener("markerLost", (e) => {
-              console.log("Marcador perdido");
-              debugInfo.innerHTML = "Buscando marcador...";
-            });
-          })
-          .catch((err) => {
-            console.error("Error al solicitar permisos de cámara:", err);
-            document.querySelector(".arjs-loader").innerHTML =
-              "<div>Error al acceder a la cámara. Por favor, asegúrate de dar los permisos necesarios.</div>";
-          });
-      });
-    </script>
   </body>
 </html>
