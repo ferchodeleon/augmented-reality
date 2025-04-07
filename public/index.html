@@ -1,154 +1,80 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>AR con Imágenes Naturales y Modelo GLB</title>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <title>AR.js con A-Frame</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
+
     <style>
-      body {
+      body,
+      html {
         margin: 0;
         overflow: hidden;
-      }
-      #info {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        color: white;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 10px;
-        font-family: Arial;
-      }
-      #loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        background: rgba(0, 0, 0, 0.7);
-        padding: 20px;
-        border-radius: 10px;
-        font-family: Arial;
       }
     </style>
   </head>
   <body>
-    <div id="info">
-      Apunte a una imagen con buen contraste (como un libro, revista o poster)
+    <div class="arjs-loader">
+      <div>Loading, please wait...</div>
     </div>
-    <div id="loading">Cargando modelo 3D...</div>
+    <!-- Escena AR -->
+    <a-scene
+      renderer="logarithmicDepthBuffer: true; precision: medium;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+      <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
+      <a-nft
+        type="nft"
+        url="nft/trex"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <a-entity
+          gltf-model="url(models/Wooden_Table.glb)"
+          scale="0.1 0.1 0.1"
+          position="0 0 0"
+          rotation="0 0 0"
+        >
+        </a-entity>
+      </a-nft>
 
-    <script>
-      // 1. Configuración inicial
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      const renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-      });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
+      <a-marker preset="hiro">
+        <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
+        <a-entity
+          gltf-model="url(models/patricio.glb)"
+          position="0 0 0"
+          scale="1 1 1 "
+          rotation="0 180 0"
+        >
+        </a-entity>
+        <!-- Un texto encima del cubo -->
+      </a-marker>
 
-      // 2. Configuración de AR.js para imágenes naturales
-      const arToolkitSource = new THREEx.ArToolkitSource({
-        sourceType: "webcam",
-      });
+      <a-marker type="pattern" url="patterns/marker.patt">
+        <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
+        <a-entity
+          gltf-model="url(models/Wooden_Table.glb)"
+          position="0 0 0"
+          scale="1 1 1 "
+          rotation="0 180 0"
+        >
+        </a-entity>
+        <!-- Un texto encima del cubo -->
+        <a-text
+          value="¡Table on augmented really 😎!"
+          position="0 1.5 0"
+          align="center"
+        ></a-text>
+      </a-marker>
 
-      const arToolkitContext = new THREEx.ArToolkitContext({
-        cameraParametersUrl:
-          "https://raw.githack.com/AR-js-org/AR.js/master/data/data/camera_para.dat",
-        detectionMode: "mono_natural",
-        maxDetectionRate: 30,
-        canvasWidth: 640,
-        canvasHeight: 480,
-      });
-
-      // 3. Controlador para el tracking natural
-      const markerRoot = new THREE.Group();
-      scene.add(markerRoot);
-
-      const arMarkerControls = new THREEx.ArMarkerControls(
-        arToolkitContext,
-        markerRoot,
-        {
-          type: "pattern",
-          descriptorsUrl: "patterns/marker.patt",
-          changeMatrixMode: "cameraTransformMatrix",
-        }
-      );
-
-      // 4. Cargar modelo GLB
-      const loader = new THREE.GLTFLoader();
-      let model;
-
-      // Reemplaza esta URL con la de tu modelo GLB
-      const modelUrl = "models/patricio.glb";
-
-      loader.load(
-        modelUrl,
-        (gltf) => {
-          model = gltf.scene;
-          // Ajusta estos valores según tu modelo
-          model.scale.set(0.1, 0.1, 0.1);
-          model.position.y = 0.05;
-          model.rotation.y = Math.PI;
-          markerRoot.add(model);
-          document.getElementById("loading").style.display = "none";
-        },
-        (xhr) => {
-          // Muestra progreso de carga
-          const percent = ((xhr.loaded / xhr.total) * 100).toFixed(2);
-          document.getElementById(
-            "loading"
-          ).textContent = `Cargando modelo 3D... ${percent}%`;
-        },
-        (error) => {
-          console.error("Error al cargar el modelo:", error);
-          document.getElementById("loading").textContent =
-            "Error al cargar el modelo";
-        }
-      );
-
-      // 5. Iluminación
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
-      scene.add(ambientLight);
-
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      directionalLight.position.set(1, 1, 0.5);
-      scene.add(directionalLight);
-
-      // 6. Bucle de renderizado
-      function animate() {
-        requestAnimationFrame(animate);
-
-        if (arToolkitSource.ready) {
-          arToolkitContext.update(arToolkitSource.domElement);
-          scene.visible = camera.visible;
-        }
-
-        renderer.render(scene, camera);
-      }
-
-      // 7. Inicialización
-      arToolkitSource.init(() => {
-        arToolkitContext.init(() => {
-          camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
-          animate();
-        });
-      });
-
-      // 8. Manejar redimensionamiento
-      window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-    </script>
+      <!-- Cámara -->
+      <a-entity camera></a-entity>
+    </a-scene>
   </body>
 </html>
