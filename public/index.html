@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>AR con Imágenes Naturales</title>
+    <title>AR con Imágenes Naturales y Modelo GLB</title>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
@@ -20,12 +20,25 @@
         padding: 10px;
         font-family: Arial;
       }
+      #loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        font-family: Arial;
+      }
     </style>
   </head>
   <body>
     <div id="info">
       Apunte a una imagen con buen contraste (como un libro, revista o poster)
     </div>
+    <div id="loading">Cargando modelo 3D...</div>
+
     <script>
       // 1. Configuración inicial
       const scene = new THREE.Scene();
@@ -50,59 +63,70 @@
       const arToolkitContext = new THREEx.ArToolkitContext({
         cameraParametersUrl:
           "https://raw.githack.com/AR-js-org/AR.js/master/data/data/camera_para.dat",
-        detectionMode: "mono_natural", // Modo para imágenes naturales
+        detectionMode: "mono_natural",
         maxDetectionRate: 30,
         canvasWidth: 640,
         canvasHeight: 480,
       });
 
-      // 3. Crear un controlador para el tracking natural
+      // 3. Controlador para el tracking natural
       const markerRoot = new THREE.Group();
       scene.add(markerRoot);
 
-      // No necesitamos un patrón específico para el modo natural
       const arMarkerControls = new THREEx.ArMarkerControls(
         arToolkitContext,
         markerRoot,
         {
-          type: "nft", // Usar NFT (Natural Feature Tracking)
-          descriptorsUrl: "leon/solo-leon", // Ruta base para los descriptores
+          type: "nft",
+          descriptorsUrl: "leon/solo-leon",
           changeMatrixMode: "cameraTransformMatrix",
         }
       );
 
-      // 4. Añadir un modelo 3D
+      // 4. Cargar modelo GLB
       const loader = new THREE.GLTFLoader();
       let model;
 
+      // Reemplaza esta URL con la de tu modelo GLB
+      const modelUrl =
+        "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb";
+
       loader.load(
-        "models/patricio.glb",
-        (glb) => {
-          model = glb.scene;
-          model.scale.set(0.5, 0.5, 0.5);
-          model.position.y = 0.5;
+        modelUrl,
+        (gltf) => {
+          model = gltf.scene;
+          // Ajusta estos valores según tu modelo
+          model.scale.set(0.1, 0.1, 0.1);
+          model.position.y = 0.05;
+          model.rotation.y = Math.PI;
           markerRoot.add(model);
+          document.getElementById("loading").style.display = "none";
         },
-        undefined,
+        (xhr) => {
+          // Muestra progreso de carga
+          const percent = ((xhr.loaded / xhr.total) * 100).toFixed(2);
+          document.getElementById(
+            "loading"
+          ).textContent = `Cargando modelo 3D... ${percent}%`;
+        },
         (error) => {
           console.error("Error al cargar el modelo:", error);
+          document.getElementById("loading").textContent =
+            "Error al cargar el modelo";
         }
       );
 
-      // 5. Añadir luz
-      const light = new THREE.AmbientLight(0xffffff, 1.0);
-      scene.add(light);
+      // 5. Iluminación
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+      scene.add(ambientLight);
+
       const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      directionalLight.position.set(1, 1, 1);
+      directionalLight.position.set(1, 1, 0.5);
       scene.add(directionalLight);
 
       // 6. Bucle de renderizado
       function animate() {
         requestAnimationFrame(animate);
-
-        if (model) {
-          model.rotation.y += 0.01;
-        }
 
         if (arToolkitSource.ready) {
           arToolkitContext.update(arToolkitSource.domElement);
