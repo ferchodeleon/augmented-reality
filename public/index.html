@@ -20,16 +20,14 @@
     <div class="arjs-loader">
       <div>Loading, please wait...</div>
     </div>
-    <!-- Escena AR -->
+
     <a-scene
-      renderer="logarithmicDepthBuffer: true; precision: medium;"
       embedded
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      arjs="detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
     >
-      <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
       <a-nft
         type="nft"
-        url="nft/trex"
+        url="nft/leon/leon"
         smooth="true"
         smoothCount="10"
         smoothTolerance=".01"
@@ -43,6 +41,15 @@
         >
         </a-entity>
       </a-nft>
+    </a-scene>
+
+    <!-- Escena AR -->
+    <a-scene
+      renderer="logarithmicDepthBuffer: true; precision: medium;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+      <!-- Marcador: cuando la cámara detecta el marcador "hiro" muestra el contenido -->
 
       <a-marker preset="hiro">
         <!-- <a-box position="0 0.5 0" material="color: green;"></a-box> -->
