@@ -44,7 +44,32 @@
       <!-- Using NFT marker -->
       <a-nft
         type="nft"
-        url="nft/zebra"
+        url="nft/file-1/imagen-1"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".05"
+        smoothThreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+        <!-- 3D model to show when marker is detected -->
+        <!-- <a-entity position="50 150 -100" scale="50 50 50" rotation="-90 0 0">
+          <a-box color="red" class="clickable"></a-box>
+        </a-entity> -->
+        <a-video
+          src="url(assets/videos/video-1.mp4)"
+          position="0 0.5 0"
+          scale="1 0.5625 1"
+          rotation="0 180 0"
+          autoplay="true"
+          loop="true"
+        >
+        </a-video>
+      </a-nft>
+      <a-nft
+        type="nft"
+        url="nft/file-2/imagen-2"
         smooth="true"
         smoothCount="10"
         smoothTolerance=".05"
