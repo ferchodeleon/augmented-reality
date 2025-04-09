@@ -53,17 +53,14 @@
         emitevents="true"
         cursor="fuse: false; rayOrigin: mouse;"
       >
-        <!-- 3D model to show when marker is detected -->
-        <!-- <a-entity position="50 150 -100" scale="50 50 50" rotation="-90 0 0">
-          <a-box color="red" class="clickable"></a-box>
-        </a-entity> -->
         <a-video
           src="url(assets/videos/video-1.mp4)"
           position="0 0.5 0"
-          scale="1 0.5625 1"
+          scale="20 20 20"
           rotation="0 180 0"
-          autoplay="true"
+          autoplay="false"
           loop="true"
+          visible="false"
         >
         </a-video>
       </a-nft>
@@ -78,15 +75,12 @@
         emitevents="true"
         cursor="fuse: false; rayOrigin: mouse;"
       >
-        <!-- 3D model to show when marker is detected -->
-        <!-- <a-entity position="50 150 -100" scale="50 50 50" rotation="-90 0 0">
-          <a-box color="red" class="clickable"></a-box>
-        </a-entity> -->
         <a-entity
           gltf-model="url(models/MESA_CHUECA.gltf)"
           position="0 30 0"
           scale="20 20 20"
           rotation="0 90 0"
+          visible="false"
         >
         </a-entity>
       </a-nft>
@@ -97,12 +91,30 @@
 
     <script>
       // Añadir eventos de depuración
-      const nft = document.querySelector("a-nft");
-      nft.addEventListener("markerFound", function () {
-        console.log("Marcador encontrado");
-      });
-      nft.addEventListener("markerLost", function () {
-        console.log("Marcador perdido");
+      const nfts = document.querySelectorAll("a-nft");
+
+      nfts.forEach((nft) => {
+        nft.addEventListener("markerFound", function () {
+          console.log("Marcador encontrado");
+          const content = nft.querySelector("a-video, a-entity");
+          if (content) {
+            content.setAttribute("visible", "true");
+            if (content.tagName === "A-VIDEO") {
+              content.play();
+            }
+          }
+        });
+
+        nft.addEventListener("markerLost", function () {
+          console.log("Marcador perdido");
+          const content = nft.querySelector("a-video, a-entity");
+          if (content) {
+            content.setAttribute("visible", "false");
+            if (content.tagName === "A-VIDEO") {
+              content.pause();
+            }
+          }
+        });
       });
     </script>
   </body>
