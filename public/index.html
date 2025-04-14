@@ -41,8 +41,8 @@
       embedded
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
     >
-      <!-- Using NFT marker -->
-      <!-- <a-nft
+      <!-- Primer marcador NFT -->
+      <a-nft
         type="nft"
         url="nft/file-1/imagen-1"
         smooth="true"
@@ -53,23 +53,23 @@
         emitevents="true"
         cursor="fuse: false; rayOrigin: mouse;"
       >
-        <a-video
-          src="url(assets/videos/video-1.mp4)"
+        <a-entity
+          gltf-model="url(models/patricio.glb)"
           position="0 0.5 0"
-          scale="20 20 20"
+          scale="0.2 0.2 0.2"
           rotation="0 180 0"
-          autoplay="false"
-          loop="true"
           visible="false"
         >
-        </a-video>
-      </a-nft> -->
+        </a-entity>
+      </a-nft>
+
+      <!-- Segundo marcador NFT -->
       <a-nft
         type="nft"
         url="nft/file-2/image-2"
         smooth="true"
         smoothCount="10"
-        smoothTolerance="1"
+        smoothTolerance=".05"
         smoothThreshold="5"
         raycaster="objects: .clickable"
         emitevents="true"
@@ -77,9 +77,9 @@
       >
         <a-entity
           gltf-model="url(models/MESA_CHUECA.gltf)"
-          position="0 30 0"
-          scale="20 20 20"
-          rotation="0 90 0"
+          position="0 0.5 0"
+          scale="0.2 0.2 0.2"
+          rotation="0 180 0"
           visible="false"
         >
         </a-entity>
@@ -96,23 +96,17 @@
       nfts.forEach((nft) => {
         nft.addEventListener("markerFound", function () {
           console.log("Marcador encontrado");
-          const content = nft.querySelector("a-video, a-entity");
+          const content = nft.querySelector("a-entity");
           if (content) {
             content.setAttribute("visible", "true");
-            if (content.tagName === "A-VIDEO") {
-              content.play();
-            }
           }
         });
 
         nft.addEventListener("markerLost", function () {
           console.log("Marcador perdido");
-          const content = nft.querySelector("a-video, a-entity");
+          const content = nft.querySelector("a-entity");
           if (content) {
             content.setAttribute("visible", "false");
-            if (content.tagName === "A-VIDEO") {
-              content.pause();
-            }
           }
         });
       });
