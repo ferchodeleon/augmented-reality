@@ -76,6 +76,7 @@
         cursor="fuse: false; rayOrigin: mouse;"
       >
         <a-video
+          id="video1"
           src="url(assets/videos/video-1.mp4)"
           position="0 0.5 0"
           scale="1 0.5625 1"
@@ -83,6 +84,7 @@
           autoplay="false"
           loop="true"
           visible="false"
+          material="shader: flat;"
         >
         </a-video>
       </a-nft>
@@ -92,30 +94,46 @@
     </a-scene>
 
     <script>
-      // Añadir eventos de depuración
-      const nfts = document.querySelectorAll("a-nft");
+      document.addEventListener("DOMContentLoaded", () => {
+        const nfts = document.querySelectorAll("a-nft");
+        const video = document.getElementById("video1");
 
-      nfts.forEach((nft) => {
-        nft.addEventListener("markerFound", function () {
-          console.log("Marcador encontrado");
-          const content = nft.querySelector("a-video, a-entity");
-          if (content) {
-            content.setAttribute("visible", "true");
-            if (content.tagName === "A-VIDEO") {
-              content.play();
-            }
-          }
+        // Ocultar el loader cuando la escena esté lista
+        const scene = document.querySelector("a-scene");
+        scene.addEventListener("loaded", () => {
+          document.querySelector(".arjs-loader").style.display = "none";
         });
 
-        nft.addEventListener("markerLost", function () {
-          console.log("Marcador perdido");
-          const content = nft.querySelector("a-video, a-entity");
-          if (content) {
-            content.setAttribute("visible", "false");
-            if (content.tagName === "A-VIDEO") {
-              content.pause();
+        nfts.forEach((nft) => {
+          nft.addEventListener("markerFound", function () {
+            console.log("Marcador encontrado");
+            const content = nft.querySelector("a-video, a-entity");
+            if (content) {
+              content.setAttribute("visible", "true");
+              if (content.tagName === "A-VIDEO") {
+                // Asegurarse de que el video esté listo antes de reproducir
+                video.addEventListener(
+                  "loadeddata",
+                  () => {
+                    video.play();
+                  },
+                  { once: true }
+                );
+              }
             }
-          }
+          });
+
+          nft.addEventListener("markerLost", function () {
+            console.log("Marcador perdido");
+            const content = nft.querySelector("a-video, a-entity");
+            if (content) {
+              content.setAttribute("visible", "false");
+              if (content.tagName === "A-VIDEO") {
+                video.pause();
+                video.currentTime = 0; // Reiniciar el video
+              }
+            }
+          });
         });
       });
     </script>
