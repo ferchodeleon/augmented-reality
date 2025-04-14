@@ -25,6 +25,10 @@
         font-size: 1.25em;
         color: white;
       }
+
+      a-video {
+        z-index: 1;
+      }
     </style>
   </head>
 
@@ -79,12 +83,12 @@
           id="video1"
           src=""
           position="0 0.5 0"
-          scale="1 0.5625 1"
+          scale="2 1.125 1"
           rotation="0 180 0"
           autoplay="false"
           loop="false"
-          visible="true"
-          material="shader: flat;"
+          visible="false"
+          material="shader: flat; transparent: true; opacity: 1;"
         >
         </a-video>
       </a-nft>
