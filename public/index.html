@@ -28,18 +28,34 @@
 
       #video-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80vmin;
+        height: 80vmin;
         z-index: 1000;
         display: none;
+        background-color: black;
       }
 
       #video-overlay video {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+      }
+
+      @media (orientation: landscape) {
+        #video-overlay {
+          width: 80vh;
+          height: 80vh;
+        }
+      }
+
+      @media (orientation: portrait) {
+        #video-overlay {
+          width: 80vw;
+          height: 80vw;
+        }
       }
     </style>
   </head>
@@ -119,7 +135,7 @@
             console.log("Marcador encontrado");
             if (nft.getAttribute("url") === "nft/file-2/image-2") {
               // Mostrar el video cuando se detecta el segundo marcador
-              video.src = "assets/videos/video-1.mp4";
+              video.src = "assets/videos/video-2.mp4";
               videoOverlay.style.display = "block";
               video.play();
             } else {
