@@ -77,7 +77,7 @@
       >
         <a-video
           id="video1"
-          src="url(assets/videos/video-1.mp4)"
+          src=""
           position="0 0.5 0"
           scale="1 0.5625 1"
           rotation="0 180 0"
@@ -109,9 +109,10 @@
             console.log("Marcador encontrado");
             const content = nft.querySelector("a-video, a-entity");
             if (content) {
-              content.setAttribute("visible", "true");
               if (content.tagName === "A-VIDEO") {
-                // Asegurarse de que el video esté listo antes de reproducir
+                // Solo cargar y mostrar el video cuando se detecta el marcador
+                video.setAttribute("src", "url(assets/videos/video-1.mp4)");
+                video.setAttribute("visible", "true");
                 video.addEventListener(
                   "loadeddata",
                   () => {
@@ -119,6 +120,8 @@
                   },
                   { once: true }
                 );
+              } else {
+                content.setAttribute("visible", "true");
               }
             }
           });
@@ -127,10 +130,12 @@
             console.log("Marcador perdido");
             const content = nft.querySelector("a-video, a-entity");
             if (content) {
-              content.setAttribute("visible", "false");
               if (content.tagName === "A-VIDEO") {
                 video.pause();
-                video.currentTime = 0; // Reiniciar el video
+                video.setAttribute("visible", "false");
+                video.setAttribute("src", ""); // Limpiar la fuente del video
+              } else {
+                content.setAttribute("visible", "false");
               }
             }
           });
