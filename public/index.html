@@ -124,6 +124,20 @@
       >
       </a-nft>
 
+      <!-- Tercer marcador NFT -->
+      <a-nft
+        type="nft"
+        url="nft/file-3/image-3"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".05"
+        smoothThreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      </a-nft>
+
       <!-- Static camera -->
       <a-entity camera></a-entity>
     </a-scene>
@@ -184,7 +198,8 @@
           );
 
         // Función para reproducir el video
-        function playVideo() {
+        function playVideo(videoSrc) {
+          video.src = videoSrc;
           video.play().catch((error) => {
             console.log("Error al reproducir el video:", error);
             // Si falla la reproducción automática, intentamos reproducir después de una interacción
@@ -199,45 +214,69 @@
           });
         }
 
-        nfts.forEach((nft) => {
-          nft.addEventListener("markerFound", function () {
-            console.log("Marcador encontrado");
-            if (
-              nft.getAttribute("url") === "nft/file-2/image-2" &&
-              !videoStarted
-            ) {
-              // Mostrar y reproducir el video solo si no ha comenzado
-              video.src = "assets/videos/video-2.mp4";
-              videoOverlay.style.display = "block";
-              videoStarted = true;
-
-              // En móviles, entrar en pantalla completa automáticamente
-              if (isMobile) {
-                enterFullscreen();
-                // Esperar un momento antes de reproducir para asegurar que la pantalla completa esté activa
-                setTimeout(playVideo, 250);
-              } else {
-                fullscreenBtn.style.display = "block";
-                playVideo();
-              }
-            } else {
-              const content = nft.querySelector("a-entity");
+        // Función para manejar diferentes marcadores
+        function handleMarker(markerUrl) {
+          switch (markerUrl) {
+            case "nft/file-1/imagen-1":
+              // Manejar el primer marcador (modelo 3D)
+              const content = document.querySelector(
+                "a-nft[url='nft/file-1/imagen-1'] a-entity"
+              );
               if (content) {
                 content.setAttribute("visible", "true");
               }
-            }
+              break;
+
+            case "nft/file-2/image-2":
+              // Manejar el segundo marcador (video 1)
+              if (!videoStarted) {
+                videoOverlay.style.display = "block";
+                videoStarted = true;
+                if (isMobile) {
+                  enterFullscreen();
+                  setTimeout(() => playVideo("assets/videos/video-2.mp4"), 250);
+                } else {
+                  fullscreenBtn.style.display = "block";
+                  playVideo("assets/videos/video-2.mp4");
+                }
+              }
+              break;
+
+            case "nft/file-3/image-3":
+              // Manejar el tercer marcador (video 2)
+              if (!videoStarted) {
+                videoOverlay.style.display = "block";
+                videoStarted = true;
+                if (isMobile) {
+                  enterFullscreen();
+                  setTimeout(() => playVideo("assets/videos/video-3.mp4"), 250);
+                } else {
+                  fullscreenBtn.style.display = "block";
+                  playVideo("assets/videos/video-3.mp4");
+                }
+              }
+              break;
+
+            default:
+              console.log("Marcador no reconocido:", markerUrl);
+          }
+        }
+
+        nfts.forEach((nft) => {
+          nft.addEventListener("markerFound", function () {
+            console.log("Marcador encontrado:", nft.getAttribute("url"));
+            handleMarker(nft.getAttribute("url"));
           });
 
           nft.addEventListener("markerLost", function () {
-            console.log("Marcador perdido");
-            if (nft.getAttribute("url") === "nft/file-2/image-2") {
-              // No hacemos nada cuando se pierde el marcador, el video continúa reproduciéndose
-            } else {
+            console.log("Marcador perdido:", nft.getAttribute("url"));
+            if (nft.getAttribute("url") === "nft/file-1/imagen-1") {
               const content = nft.querySelector("a-entity");
               if (content) {
                 content.setAttribute("visible", "false");
               }
             }
+            // Los videos continúan reproduciéndose aunque se pierda el marcador
           });
         });
       });
