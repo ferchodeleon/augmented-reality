@@ -55,9 +55,9 @@
       >
         <a-entity
           gltf-model="url(models/patricio.glb)"
-          position="0 0.5 0"
-          scale="0.2 0.2 0.2"
-          rotation="0 180 0"
+          position="0 0 0"
+          scale="20 20 20"
+          rotation="0 90 0"
           visible="false"
         >
         </a-entity>
@@ -75,14 +75,16 @@
         emitevents="true"
         cursor="fuse: false; rayOrigin: mouse;"
       >
-        <a-entity
-          gltf-model="url(models/MESA_CHUECA.gltf)"
+        <a-video
+          src="url(assets/videos/video-1.mp4)"
           position="0 0.5 0"
-          scale="0.2 0.2 0.2"
+          scale="1 0.5625 1"
           rotation="0 180 0"
+          autoplay="false"
+          loop="true"
           visible="false"
         >
-        </a-entity>
+        </a-video>
       </a-nft>
 
       <!-- Static camera -->
@@ -96,17 +98,23 @@
       nfts.forEach((nft) => {
         nft.addEventListener("markerFound", function () {
           console.log("Marcador encontrado");
-          const content = nft.querySelector("a-entity");
+          const content = nft.querySelector("a-video, a-entity");
           if (content) {
             content.setAttribute("visible", "true");
+            if (content.tagName === "A-VIDEO") {
+              content.play();
+            }
           }
         });
 
         nft.addEventListener("markerLost", function () {
           console.log("Marcador perdido");
-          const content = nft.querySelector("a-entity");
+          const content = nft.querySelector("a-video, a-entity");
           if (content) {
             content.setAttribute("visible", "false");
+            if (content.tagName === "A-VIDEO") {
+              content.pause();
+            }
           }
         });
       });
