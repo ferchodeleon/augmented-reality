@@ -194,6 +194,20 @@
       >
       </a-nft>
 
+      <!-- Octavo marcador NFT -->
+      <a-nft
+        type="nft"
+        url="nft/file-8/image-8"
+        smooth="true"
+        smoothCount="5"
+        smoothTolerance="0.01"
+        smoothThreshold="2"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      </a-nft>
+
       <!-- Static camera -->
       <a-entity camera></a-entity>
     </a-scene>
@@ -403,6 +417,37 @@
                   playVideo("assets/videos/video-7.mp4");
                 }
               }
+              break;
+
+            case "nft/file-8/image-8":
+              // Manejar el octavo marcador (Modelo 3D #4)
+              const image8 = document.querySelector(
+                "a-nft[url='nft/file-8/image-8'] a-entity"
+              );
+
+              // Crear y mostrar el texto "Generando modelo 3D"
+              const loadingTextImage8 = document.createElement("a-text");
+              loadingTextImage8.setAttribute("value", "Generando modelo 3D");
+              loadingTextImage8.setAttribute("position", "0 0 0");
+              loadingTextImage8.setAttribute("scale", "0.5 0.5 0.5");
+              loadingTextImage8.setAttribute("align", "center");
+              loadingTextImage8.setAttribute("color", "#ffffff");
+              loadingTextImage8.setAttribute("width", "4");
+              loadingTextImage8.setAttribute("z-offset", "0.5");
+
+              // Agregar el texto al marcador NFT
+              const nftMarkerImage8 = document.querySelector(
+                "a-nft[url='nft/file-8/image-8']"
+              );
+              nftMarkerImage8.appendChild(loadingTextImage8);
+
+              // Después de 1 segundo, ocultar el texto y mostrar el modelo
+              setTimeout(() => {
+                loadingTextImage8.remove();
+                if (image8) {
+                  image8.setAttribute("visible", "true");
+                }
+              }, 1000);
               break;
 
             default:
