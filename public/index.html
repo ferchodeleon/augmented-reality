@@ -166,6 +166,20 @@
       >
       </a-nft>
 
+      <!-- Sexto marcador NFT -->
+      <a-nft
+        type="nft"
+        url="nft/file-6/image-6"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".05"
+        smoothThreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      </a-nft>
+
       <!-- Static camera -->
       <a-entity camera></a-entity>
     </a-scene>
@@ -288,28 +302,28 @@
             case "nft/file-4/image-4":
               // Manejar el cuarto marcador (Modelo 3D #2)
               const image4 = document.querySelector(
-                "a-nft[url='nft/file-1/imagen-1'] a-entity"
+                "a-nft[url='nft/file-4/image-4'] a-entity"
               );
 
               // Crear y mostrar el texto "Generando modelo 3D"
-              const loadingText = document.createElement("a-text");
-              loadingText.setAttribute("value", "Generando modelo 3D");
-              loadingText.setAttribute("position", "0 0 -0.5");
-              loadingText.setAttribute("scale", "0.5 0.5 0.5");
-              loadingText.setAttribute("align", "center");
-              loadingText.setAttribute("color", "#ffffff");
-              loadingText.setAttribute("width", "4");
-              loadingText.setAttribute("z-offset", "0.5");
+              const loadingTextImage4 = document.createElement("a-text");
+              loadingTextImage4.setAttribute("value", "Generando modelo 3D");
+              loadingTextImage4.setAttribute("position", "0 0 -0.5");
+              loadingTextImage4.setAttribute("scale", "0.5 0.5 0.5");
+              loadingTextImage4.setAttribute("align", "center");
+              loadingTextImage4.setAttribute("color", "#ffffff");
+              loadingTextImage4.setAttribute("width", "4");
+              loadingTextImage4.setAttribute("z-offset", "0.5");
 
               // Agregar el texto al marcador NFT
-              const nftMarker = document.querySelector(
+              const nftMarkerImage4 = document.querySelector(
                 "a-nft[url='nft/file-4/image-4']"
               );
-              nftMarker.appendChild(loadingText);
+              nftMarkerImage4.appendChild(loadingTextImage4);
 
               // Después de 1 segundo, ocultar el texto y mostrar el modelo
               setTimeout(() => {
-                loadingText.remove();
+                loadingTextImage4.remove();
                 if (image4) {
                   image4.setAttribute("visible", "true");
                 }
@@ -329,6 +343,37 @@
                   playVideo("assets/videos/video-5.mp4");
                 }
               }
+              break;
+
+            case "nft/file-6/image-6":
+              // Manejar el sexto marcador (Modelo 3D #3)
+              const image6 = document.querySelector(
+                "a-nft[url='nft/file-6/image-6'] a-entity"
+              );
+
+              // Crear y mostrar el texto "Generando modelo 3D"
+              const loadingTextImage6 = document.createElement("a-text");
+              loadingTextImage6.setAttribute("value", "Generando modelo 3D");
+              loadingTextImage6.setAttribute("position", "0 0 -0.5");
+              loadingTextImage6.setAttribute("scale", "0.5 0.5 0.5");
+              loadingTextImage6.setAttribute("align", "center");
+              loadingTextImage6.setAttribute("color", "#ffffff");
+              loadingTextImage6.setAttribute("width", "4");
+              loadingTextImage6.setAttribute("z-offset", "0.5");
+
+              // Agregar el texto al marcador NFT
+              const nftMarkerImage6 = document.querySelector(
+                "a-nft[url='nft/file-6/image-6']"
+              );
+              nftMarkerImage6.appendChild(loadingTextImage6);
+
+              // Después de 1 segundo, ocultar el texto y mostrar el modelo
+              setTimeout(() => {
+                loadingTextImage6.remove();
+                if (image6) {
+                  image6.setAttribute("visible", "true");
+                }
+              }, 1000);
               break;
 
             default:
