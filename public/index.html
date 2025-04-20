@@ -391,10 +391,12 @@
             console.log("Marcador perdido:", nft.getAttribute("url"));
             const markerUrl = nft.getAttribute("url");
 
-            // Resetear el estado cuando se pierde cualquier marcador
-            videoStarted = false;
-            videoOverlay.style.display = "none";
-            fullscreenBtn.style.display = "none";
+            // Solo resetear el estado si no hay video reproduciéndose
+            if (!video || video.paused) {
+              videoStarted = false;
+              videoOverlay.style.display = "none";
+              fullscreenBtn.style.display = "none";
+            }
 
             // Ocultar el modelo 3D si corresponde
             if (
@@ -407,7 +409,6 @@
                 content.setAttribute("visible", "false");
               }
             }
-            // Los videos continúan reproduciéndose aunque se pierda el marcador
           });
         });
       });
