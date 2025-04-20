@@ -138,6 +138,20 @@
       >
       </a-nft>
 
+      <!-- Cuarto marcador NFT -->
+      <a-nft
+        type="nft"
+        url="nft/file-4/image-4"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".05"
+        smoothThreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      </a-nft>
+
       <!-- Static camera -->
       <a-entity camera></a-entity>
     </a-scene>
@@ -218,12 +232,12 @@
         function handleMarker(markerUrl) {
           switch (markerUrl) {
             case "nft/file-1/imagen-1":
-              // Manejar el primer marcador (modelo 3D)
-              const content = document.querySelector(
+              // Manejar el primer marcador (modelo 3D #1)
+              const imagen = document.querySelector(
                 "a-nft[url='nft/file-1/imagen-1'] a-entity"
               );
-              if (content) {
-                content.setAttribute("visible", "true");
+              if (imagen) {
+                imagen.setAttribute("visible", "true");
               }
               break;
 
@@ -255,6 +269,35 @@
                   playVideo("assets/videos/video-3.mp4");
                 }
               }
+              break;
+
+            case "nft/file-4/image-4":
+              // Manejar el cuarto marcador (Modelo 3D #2)
+              const image4 = document.querySelector(
+                "a-nft[url='nft/file-1/imagen-1'] a-entity"
+              );
+
+              // Crear y mostrar el texto "Generando modelo 3D"
+              const loadingText = document.createElement("a-text");
+              loadingText.setAttribute("value", "Generando modelo 3D");
+              loadingText.setAttribute("position", "0 0 0");
+              loadingText.setAttribute("scale", "100 100 100");
+              loadingText.setAttribute("align", "center");
+              loadingText.setAttribute("color", "#ffffff");
+
+              // Agregar el texto al marcador NFT
+              const nftMarker = document.querySelector(
+                "a-nft[url='nft/file-4/image-4']"
+              );
+              nftMarker.appendChild(loadingText);
+
+              // Después de 1 segundo, ocultar el texto y mostrar el modelo
+              setTimeout(() => {
+                loadingText.remove();
+                if (image4) {
+                  image4.setAttribute("visible", "true");
+                }
+              }, 1000);
               break;
 
             default:
