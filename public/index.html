@@ -180,6 +180,20 @@
       >
       </a-nft>
 
+      <!-- Septimo marcador NFT -->
+      <a-nft
+        type="nft"
+        url="nft/file-7/image-7"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".05"
+        smoothThreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      </a-nft>
+
       <!-- Static camera -->
       <a-entity camera></a-entity>
     </a-scene>
@@ -374,6 +388,21 @@
                   image6.setAttribute("visible", "true");
                 }
               }, 1000);
+              break;
+
+            case "nft/file-7/image-7":
+              // Manejar el septimo marcador (video 7)
+              if (!videoStarted) {
+                videoOverlay.style.display = "block";
+                videoStarted = true;
+                if (isMobile) {
+                  enterFullscreen();
+                  setTimeout(() => playVideo("assets/videos/video-7.mp4"), 250);
+                } else {
+                  fullscreenBtn.style.display = "block";
+                  playVideo("assets/videos/video-7.mp4");
+                }
+              }
               break;
 
             default:
