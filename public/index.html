@@ -389,13 +389,30 @@
 
           nft.addEventListener("markerLost", function () {
             console.log("Marcador perdido:", nft.getAttribute("url"));
-            if (nft.getAttribute("url") === "nft/file-1/imagen-1") {
+            const markerUrl = nft.getAttribute("url");
+
+            // Resetear el estado cuando se pierde cualquier marcador
+            videoStarted = false;
+            videoOverlay.style.display = "none";
+            fullscreenBtn.style.display = "none";
+
+            // Ocultar el modelo 3D si corresponde
+            if (
+              markerUrl === "nft/file-1/imagen-1" ||
+              markerUrl === "nft/file-4/image-4" ||
+              markerUrl === "nft/file-6/image-6"
+            ) {
               const content = nft.querySelector("a-entity");
               if (content) {
                 content.setAttribute("visible", "false");
               }
             }
-            // Los videos continúan reproduciéndose aunque se pierda el marcador
+
+            // Detener el video si está reproduciéndose
+            if (video && !video.paused) {
+              video.pause();
+              video.currentTime = 0;
+            }
           });
         });
       });
