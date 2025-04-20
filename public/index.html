@@ -208,6 +208,20 @@
       >
       </a-nft>
 
+      <!-- Noveno marcador NFT -->
+      <a-nft
+        type="nft"
+        url="nft/file-9/image-9"
+        smooth="true"
+        smoothCount="5"
+        smoothTolerance="0.01"
+        smoothThreshold="3"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      </a-nft>
+
       <!-- Static camera -->
       <a-entity camera></a-entity>
     </a-scene>
@@ -448,6 +462,21 @@
                   image8.setAttribute("visible", "true");
                 }
               }, 1000);
+              break;
+
+            case "nft/file-9/image-9":
+              // Manejar el noveno marcador (video 9)
+              if (!videoStarted) {
+                videoOverlay.style.display = "block";
+                videoStarted = true;
+                if (isMobile) {
+                  enterFullscreen();
+                  setTimeout(() => playVideo("assets/videos/video-9.mp4"), 250);
+                } else {
+                  fullscreenBtn.style.display = "block";
+                  playVideo("assets/videos/video-9.mp4");
+                }
+              }
               break;
 
             default:
