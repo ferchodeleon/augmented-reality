@@ -407,12 +407,7 @@
                 content.setAttribute("visible", "false");
               }
             }
-
-            // Detener el video si está reproduciéndose
-            if (video && !video.paused) {
-              video.pause();
-              video.currentTime = 0;
-            }
+            // Los videos continúan reproduciéndose aunque se pierda el marcador
           });
         });
       });
